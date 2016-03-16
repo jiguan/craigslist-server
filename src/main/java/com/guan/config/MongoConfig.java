@@ -8,7 +8,7 @@ import com.mongodb.Mongo;
 import com.mongodb.MongoClient;
 
 @Configuration
-@EnableMongoRepositories("com.guan.dao")
+@EnableMongoRepositories("com.guan.repo")
 public class MongoConfig extends AbstractMongoConfiguration {
    @Override
    protected String getDatabaseName() {
