@@ -2,12 +2,13 @@ package com.guan.dto;
 
 import com.guan.domain.Category;
 
-import lombok.Value;
+import lombok.Data;
 
-@Value
+@Data
 public class CategoryDto {
    private String id;
    private String name;
+   public CategoryDto() {}
    public CategoryDto(Category category) {
       super();
       this.id = category.getId();

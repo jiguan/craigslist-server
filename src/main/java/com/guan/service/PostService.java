@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.guan.domain.Post;
+import com.guan.dto.PostDto;
 import com.guan.repo.PostRepository;
 
 @Service
@@ -28,4 +29,20 @@ public class PostService {
    public Post getPost(String id) {
       return repo.findOne(id);
    }
+
+   public Post createPost(PostDto dto) {
+      return save(new Post(dto));
+   }
+   
+   public Post save(Post post) {
+      return repo.save(post);
+   }
+
+   public Post updatePost(String id, PostDto dto) {
+      Post post = getPost(id);
+      post.setTitle(dto.getTitle());
+      post.setDetail(dto.getDetail());
+      return save(post);
+   }
+
 }

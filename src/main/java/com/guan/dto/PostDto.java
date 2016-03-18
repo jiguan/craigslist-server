@@ -2,15 +2,15 @@ package com.guan.dto;
 
 import com.guan.domain.Post;
 
-import lombok.Value;
+import lombok.Data;
 
-@Value
+@Data
 public class PostDto {
    String id;
    String title;
    String detail;
    String category;
-   
+   public PostDto() {}
    public PostDto(Post post) {
       this.title = post.getTitle();
       this.id = post.getId();

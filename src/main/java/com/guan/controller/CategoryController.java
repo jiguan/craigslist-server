@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,6 +18,8 @@ import com.guan.dto.CategoryDto;
 import com.guan.dto.PostDto;
 import com.guan.service.CategoryService;
 
+import io.swagger.annotations.ApiOperation;
+
 @RestController
 @RequestMapping("/api/category")
 public class CategoryController {
@@ -25,8 +28,19 @@ public class CategoryController {
    @Autowired
    private CategoryService service;
    
+   @RequestMapping(value = "/posts", method = RequestMethod.GET)
+   @ApiOperation(value = "Debug only, get all posts")
+   public List<PostDto> getPosts() {
+      List<PostDto> dtos = new ArrayList<>();
+      for(Post p : service.getPosts()) {
+         dtos.add(new PostDto(p));
+      }
+      LOGGER.info("Posts size: {}", dtos.size());
+      return dtos;
+   }
+   
    @RequestMapping(value = "/{:id}/posts", method = RequestMethod.GET)
-   public List<PostDto> getPostsUnder(@PathVariable("id") String categoryId) {
+   public List<PostDto> getPostsUnderCategory(@PathVariable("id") String categoryId) {
       List<PostDto> dtos = new ArrayList<>();
       for(Post p : service.getPostsUnderCategory(categoryId)) {
          dtos.add(new PostDto(p));
@@ -36,6 +50,7 @@ public class CategoryController {
    }
    
    @RequestMapping(value = "/", method = RequestMethod.GET)
+   @ApiOperation(value = "Get all categories")
    public List<CategoryDto> getCategory() {
       List<CategoryDto> dtos = new ArrayList<>();
       for(Category c : service.getCategories()) {
@@ -43,5 +58,11 @@ public class CategoryController {
       }
       LOGGER.info("Posts size: {}", dtos.size());
       return dtos;
+   }
+   
+   @RequestMapping(value = "/", method = RequestMethod.POST)
+   public CategoryDto createCategory(@RequestBody CategoryDto dto) {
+      Category category = new Category(dto);
+      return new CategoryDto(service.save(category));
    }
 }
