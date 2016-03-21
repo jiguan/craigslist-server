@@ -15,13 +15,13 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 import com.guan.Application;
-import com.guan.config.TestMongoConfig;
+import com.guan.config.EmbeddedMongoConfig;
 import com.guan.domain.Category;
 import com.guan.domain.Post;
 
 @WebAppConfiguration
 @RunWith(MockitoJUnitRunner.class)
-@SpringApplicationConfiguration(classes = {Application.class, TestMongoConfig.class})
+@SpringApplicationConfiguration(classes = {Application.class, EmbeddedMongoConfig.class})
 public class PostServiceTest {
    private static final Logger LOGGER = LoggerFactory.getLogger(PostServiceTest.class);
 

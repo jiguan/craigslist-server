@@ -1,37 +1,41 @@
 package com.guan.service;
 
-import java.util.List;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.runners.MockitoJUnitRunner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import com.guan.Application;
-import com.guan.config.TestMongoConfig;
 import com.guan.domain.Category;
-import com.guan.domain.Post;
+import com.guan.repo.CategoryRepository;
 
 @WebAppConfiguration
-@RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = {Application.class, TestMongoConfig.class})
+@RunWith(MockitoJUnitRunner.class)
+@SpringApplicationConfiguration(classes = {Application.class})
 public class CategoryServiceTest {
    Logger LOGGER = LoggerFactory.getLogger(CategoryServiceTest.class);
    
-   @Autowired
+   @InjectMocks
    private CategoryService categoryService;
-   @Autowired
-   private PostService postService;
+   
+   @Mock
+   CategoryRepository repo;
    
    @Test
    public void test() {
       Category category = new Category("Test category");
-      categoryService.save(category);
-      LOGGER.info("Category: {}", category.getId());
+      Category category2 = new Category("Test category2");
+      category2.setId("2");
+      Mockito.when(repo.save(category)).thenReturn(category2);
+      ReflectionTestUtils.setField(categoryService, "repo", repo);
+      LOGGER.info("Category: {}", categoryService.saveCategory(category).getId());
    }
    
   

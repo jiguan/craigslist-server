@@ -6,6 +6,8 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,7 +25,7 @@ import io.swagger.annotations.ApiOperation;
 
 @RestController
 @RequestMapping("/api/category")
-public class CategoryController {
+public class CategoryController extends Controller {
    private Logger LOGGER = LoggerFactory.getLogger(CategoryController.class);
    
    @Autowired
@@ -44,10 +46,25 @@ public class CategoryController {
    
    @RequestMapping(value = "/", method = RequestMethod.POST)
    public CategoryDto createCategory(@RequestBody CategoryDto dto) {
-      Category category = new Category(dto);
-      return new CategoryDto(categoryService.save(category));
+      return new CategoryDto(categoryService.createCategory(dto));
    }
-                                          
+   
+   @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+   public CategoryDto getCategory(@PathVariable("id") String id) {
+      return new CategoryDto(categoryService.getCategory(id));
+   }
+   
+   @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+   public CategoryDto updateCategory(@PathVariable("id") String id, @RequestBody CategoryDto dto) {
+      return new CategoryDto(categoryService.updateCategory(id, dto));
+   }
+   
+   @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+   public ResponseEntity<String> deleteCategory(@PathVariable("id") String id) {
+      categoryService.deleteCategory(id);
+      return new ResponseEntity<String>(HttpStatus.NO_CONTENT);
+   }
+   
    @RequestMapping(value = "/posts", method = RequestMethod.GET)
    @ApiOperation(value = "Debug only, get all posts")
    public List<PostDto> getPosts() {
@@ -68,4 +85,5 @@ public class CategoryController {
       LOGGER.info("Posts size: {}", dtos.size());
       return dtos;
    }
+   
 }

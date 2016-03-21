@@ -20,7 +20,7 @@ import de.flapdoodle.embed.mongo.config.Net;
 import de.flapdoodle.embed.mongo.distribution.Version;
 
 @Configuration
-public class TestMongoConfig {
+public class EmbeddedMongoConfig {
    @Autowired
    private MongoProperties properties;
 

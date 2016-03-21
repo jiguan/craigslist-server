@@ -3,6 +3,8 @@ package com.guan.controller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,7 +19,7 @@ import io.swagger.annotations.ApiOperation;
 
 @RestController
 @RequestMapping("/api/post")
-public class PostController {
+public class PostController extends Controller {
    private Logger LOGGER = LoggerFactory.getLogger(PostController.class);
 
    @Autowired
@@ -32,6 +34,13 @@ public class PostController {
    @ApiOperation(value = "Update a post, id and category cannot be changed")
    public Post updatePost(@PathVariable("id") String id, @RequestBody PostDto dto) {
       return service.updatePost(id, dto);
+   }
+   
+   @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+   @ApiOperation(value = "Remove record completely")
+   public ResponseEntity<String> deletePost(@PathVariable("id") String id) {
+      service.deletePost(id);
+      return new ResponseEntity<String>(HttpStatus.NO_CONTENT);
    }
    
    @RequestMapping(value = "/", method = RequestMethod.POST)

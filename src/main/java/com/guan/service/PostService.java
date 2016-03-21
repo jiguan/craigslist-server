@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.guan.domain.Post;
 import com.guan.dto.PostDto;
+import com.guan.exceptions.ResourceNotFoundException;
 import com.guan.repo.PostRepository;
 
 @Service
@@ -36,11 +37,10 @@ public class PostService {
    }
 
    public Post createPost(PostDto dto) {
-     Post post = save(new Post(dto));
-     return post;
+     return savePost(new Post(dto));
    }
    
-   public Post save(Post post) {
+   public Post savePost(Post post) {
       return repo.save(post);
    }
 
@@ -48,7 +48,16 @@ public class PostService {
       Post post = getPost(id);
       post.setTitle(dto.getTitle());
       post.setDetail(dto.getDetail());
-      return save(post);
+      return savePost(post);
+   }
+
+   public void deletePost(String id) {
+      LOGGER.warn("Delete post {}", id);
+      if(getPost(id)!=null){
+         repo.delete(id);
+      } else {
+         throw new ResourceNotFoundException(String.format("Post %s is not found", id));
+      }
    }
 
 }
