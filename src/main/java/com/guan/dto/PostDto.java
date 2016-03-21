@@ -6,14 +6,11 @@ import lombok.Data;
 
 @Data
 public class PostDto {
-   String id;
-   String title;
-   String detail;
-   String category;
+   private String id, title, detail, category;
    public PostDto() {}
    public PostDto(Post post) {
       this.title = post.getTitle();
-      this.id = post.getId();
+      this.id = post.getId().toHexString();
       this.detail = post.getDetail();
       this.category = post.getCategory();
    }

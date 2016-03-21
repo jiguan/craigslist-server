@@ -17,6 +17,7 @@ import com.guan.domain.Post;
 import com.guan.dto.CategoryDto;
 import com.guan.dto.PostDto;
 import com.guan.service.CategoryService;
+import com.guan.service.PostService;
 
 import io.swagger.annotations.ApiOperation;
 
@@ -26,34 +27,15 @@ public class CategoryController {
    private Logger LOGGER = LoggerFactory.getLogger(CategoryController.class);
    
    @Autowired
-   private CategoryService service;
-   
-   @RequestMapping(value = "/posts", method = RequestMethod.GET)
-   @ApiOperation(value = "Debug only, get all posts")
-   public List<PostDto> getPosts() {
-      List<PostDto> dtos = new ArrayList<>();
-      for(Post p : service.getPosts()) {
-         dtos.add(new PostDto(p));
-      }
-      LOGGER.info("Posts size: {}", dtos.size());
-      return dtos;
-   }
-   
-   @RequestMapping(value = "/{:id}/posts", method = RequestMethod.GET)
-   public List<PostDto> getPostsUnderCategory(@PathVariable("id") String categoryId) {
-      List<PostDto> dtos = new ArrayList<>();
-      for(Post p : service.getPostsUnderCategory(categoryId)) {
-         dtos.add(new PostDto(p));
-      }
-      LOGGER.info("Posts size: {}", dtos.size());
-      return dtos;
-   }
+   private CategoryService categoryService;
+   @Autowired
+   private PostService postService;
    
    @RequestMapping(value = "/", method = RequestMethod.GET)
    @ApiOperation(value = "Get all categories")
    public List<CategoryDto> getCategory() {
       List<CategoryDto> dtos = new ArrayList<>();
-      for(Category c : service.getCategories()) {
+      for(Category c : categoryService.getCategories()) {
          dtos.add(new CategoryDto(c));
       }
       LOGGER.info("Posts size: {}", dtos.size());
@@ -63,6 +45,27 @@ public class CategoryController {
    @RequestMapping(value = "/", method = RequestMethod.POST)
    public CategoryDto createCategory(@RequestBody CategoryDto dto) {
       Category category = new Category(dto);
-      return new CategoryDto(service.save(category));
+      return new CategoryDto(categoryService.save(category));
+   }
+                                          
+   @RequestMapping(value = "/posts", method = RequestMethod.GET)
+   @ApiOperation(value = "Debug only, get all posts")
+   public List<PostDto> getPosts() {
+      List<PostDto> dtos = new ArrayList<>();
+      for(Post p : postService.getAllPosts()) {
+         dtos.add(new PostDto(p));
+      }
+      LOGGER.info("Posts size: {}", dtos.size());
+      return dtos;
+   }
+   
+   @RequestMapping(value = "/{id}/posts", method = RequestMethod.GET)
+   public List<PostDto> getPostsUnderCategory(@PathVariable("id") String categoryId) {
+      List<PostDto> dtos = new ArrayList<>();
+      for(Post p : postService.getPostsUnderCategory(categoryId)) {
+         dtos.add(new PostDto(p));
+      }
+      LOGGER.info("Posts size: {}", dtos.size());
+      return dtos;
    }
 }

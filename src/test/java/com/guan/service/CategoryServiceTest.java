@@ -4,9 +4,6 @@ import java.util.List;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,36 +17,24 @@ import com.guan.domain.Category;
 import com.guan.domain.Post;
 
 @WebAppConfiguration
-@RunWith(MockitoJUnitRunner.class)
+@RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = {Application.class, TestMongoConfig.class})
-public class PostServiceTest {
-   private static final Logger LOGGER = LoggerFactory.getLogger(PostServiceTest.class);
-
-//   @Mock
-//   AddressDao addressDao;
-
-   @InjectMocks
+public class CategoryServiceTest {
+   Logger LOGGER = LoggerFactory.getLogger(CategoryServiceTest.class);
+   
+   @Autowired
+   private CategoryService categoryService;
+   @Autowired
    private PostService postService;
-
-   @Test
-   public void testDbConnection() {
-      List<Post> r = postService.getAllPosts();
-      for(Post p : r) {
-         LOGGER.info(p.toString());
-      }
-   }
    
    @Test
-   public void testGetAllPosts() {
-//      List<Post> posts = categoryService.getPosts();
-//      for(Post p : posts) {
-//         
-//      }
+   public void test() {
+      Category category = new Category("Test category");
+      categoryService.save(category);
+      LOGGER.info("Category: {}", category.getId());
    }
    
-   @Test
-   public void testSavePostUnderCertainCategory() {
-     
-   }
+  
+   
 
 }

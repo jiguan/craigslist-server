@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.guan.domain.Post;
@@ -23,10 +22,16 @@ public class PostController {
 
    @Autowired
    private PostService service;
-
+   
    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
    public Post getPost(@PathVariable("id") String id) {
       return service.getPost(id);
+   }
+   
+   @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+   @ApiOperation(value = "Update a post, id and category cannot be changed")
+   public Post updatePost(@PathVariable("id") String id, @RequestBody PostDto dto) {
+      return service.updatePost(id, dto);
    }
    
    @RequestMapping(value = "/", method = RequestMethod.POST)
@@ -36,11 +41,6 @@ public class PostController {
       return post;
    }
 
-   @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-   @ApiOperation(value = "Update a post, id and category cannot be changed")
-   public Post updatePost(@PathVariable("id") String id, @RequestBody PostDto dto) {
-      return service.updatePost(id, dto);
-   }
    
 
 }

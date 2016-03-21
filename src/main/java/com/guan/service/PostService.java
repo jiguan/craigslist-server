@@ -1,6 +1,7 @@
 package com.guan.service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,6 +18,10 @@ public class PostService {
 
    @Autowired
    private PostRepository repo;
+   
+   public List<Post> getPostsUnderCategory(String categoryId) {
+      return repo.findAll().stream().filter(p -> p.getCategory().equals(categoryId)).collect(Collectors.toList());
+   }
 
    public List<Post> getAllPosts() {
       List<Post> result = repo.findAll();
@@ -31,7 +36,8 @@ public class PostService {
    }
 
    public Post createPost(PostDto dto) {
-      return save(new Post(dto));
+     Post post = save(new Post(dto));
+     return post;
    }
    
    public Post save(Post post) {

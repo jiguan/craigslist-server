@@ -6,6 +6,7 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 
 import com.mongodb.Mongo;
 import com.mongodb.MongoClient;
+//http://docs.spring.io/spring-data/mongodb/docs/1.5.4.RELEASE/reference/html/mapping-chapter.html
 
 @Configuration
 @EnableMongoRepositories("com.guan.repo")
