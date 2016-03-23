@@ -7,6 +7,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
+import org.springframework.security.oauth2.config.annotation.web.configuration.EnableOAuth2Client;
 
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
@@ -17,6 +19,8 @@ import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @EnableSwagger2
+@EnableOAuth2Client
+@EnableAuthorizationServer
 @SpringBootApplication
 public class Application {
 
@@ -25,7 +29,7 @@ public class Application {
    }
 
    @Bean
-   public Docket newsApi() {
+   public Docket api() {
       return new Docket(DocumentationType.SWAGGER_2)
             .select()
                .apis(RequestHandlerSelectors.basePackage("com.guan.controller"))

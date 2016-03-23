@@ -25,6 +25,13 @@ public class PostController extends Controller {
    @Autowired
    private PostService service;
    
+   @RequestMapping(value = "/", method = RequestMethod.POST)
+   @ApiOperation(value = "Save a post under the assgined category")
+   public Post createPost(@RequestBody PostDto dto) {
+      Post post = service.createPost(dto);
+      return post;
+   }
+   
    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
    public Post getPost(@PathVariable("id") String id) {
       return service.getPost(id);
@@ -42,14 +49,5 @@ public class PostController extends Controller {
       service.deletePost(id);
       return new ResponseEntity<String>(HttpStatus.NO_CONTENT);
    }
-   
-   @RequestMapping(value = "/", method = RequestMethod.POST)
-   @ApiOperation(value = "Save a post under the assgined category")
-   public Post createPost(@RequestBody PostDto dto) {
-      Post post = service.createPost(dto);
-      return post;
-   }
-
-   
 
 }
