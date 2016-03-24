@@ -17,7 +17,9 @@ import org.springframework.boot.autoconfigure.security.oauth2.resource.UserInfoT
 import org.springframework.boot.context.embedded.FilterRegistrationBean;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -37,6 +39,8 @@ import org.springframework.security.web.csrf.CsrfTokenRepository;
 import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
 import org.springframework.web.filter.CompositeFilter;
 import org.springframework.web.filter.OncePerRequestFilter;
+import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.util.WebUtils;
 
 @Order(6)
@@ -55,13 +59,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
          // @formatter:on
       }
    }
+   
+
 
    @Override
    protected void configure(HttpSecurity http) throws Exception {
       // @formatter:off
-      http.antMatcher("/**").authorizeRequests().antMatchers("/", "/login**", "/webjars/**").permitAll().anyRequest().authenticated().and().exceptionHandling()
-            .authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/")).and().logout().logoutSuccessUrl("/").permitAll().and().csrf().csrfTokenRepository(csrfTokenRepository()).and()
-            .addFilterAfter(csrfHeaderFilter(), CsrfFilter.class).addFilterBefore(ssoFilter(), BasicAuthenticationFilter.class);
+      http.antMatcher("/**").authorizeRequests().antMatchers("/", "/login**", "/swagger**").permitAll().anyRequest().authenticated().and().exceptionHandling()
+            .authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/login"))
+            .and().logout().logoutSuccessUrl("/login").permitAll()
+            .and().csrf().csrfTokenRepository(csrfTokenRepository())
+            .and().addFilterAfter(csrfHeaderFilter(), CsrfFilter.class).addFilterBefore(ssoFilter(), BasicAuthenticationFilter.class);
       // @formatter:on
    }
 

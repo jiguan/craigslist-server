@@ -9,6 +9,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableOAuth2Client;
+import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
@@ -56,5 +58,16 @@ public class Application {
             .contact("Ricky Guan")
             .version("1.0")
             .build();
+   }
+   
+   @Bean
+   public WebMvcConfigurerAdapter forward() {
+       return new WebMvcConfigurerAdapter() {
+           @Override
+           public void addViewControllers(ViewControllerRegistry registry) {
+               registry.addViewController("/swagger").setViewName("forward:/swagger-ui.html");
+               registry.addViewController("/login").setViewName("forward:/login.html");
+           }
+       };
    }
 }
