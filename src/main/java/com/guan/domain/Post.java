@@ -1,5 +1,8 @@
 package com.guan.domain;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
@@ -16,6 +19,7 @@ public class Post {
    @Id
    private ObjectId id;
    private String title, detail;
+   private List<Comment> comments = new ArrayList<>();
    
    @Indexed
    private String category;
@@ -36,5 +40,9 @@ public class Post {
       this.title = dto.getTitle();
       this.detail = dto.getDetail();
       this.category = dto.getCategory();
+   }
+   
+   public void addComment(Comment comment) {
+      this.comments.add(comment);
    }
 }

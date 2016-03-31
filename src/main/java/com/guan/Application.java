@@ -4,13 +4,15 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
-import org.springframework.security.oauth2.config.annotation.web.configuration.EnableOAuth2Client;
+//import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
+//import org.springframework.security.oauth2.config.annotation.web.configuration.EnableOAuth2Client;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.boot.actuate.autoconfigure.ManagementWebSecurityAutoConfiguration;
 
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
@@ -21,9 +23,12 @@ import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @EnableSwagger2
-@EnableOAuth2Client
-@EnableAuthorizationServer
+//@EnableOAuth2Client
+//@EnableAuthorizationServer
 @SpringBootApplication
+@EnableAutoConfiguration(exclude = {
+      org.springframework.boot.autoconfigure.security.SecurityAutoConfiguration.class,
+      org.springframework.boot.actuate.autoconfigure.ManagementWebSecurityAutoConfiguration.class})
 public class Application {
 
    public static void main(String[] args) {

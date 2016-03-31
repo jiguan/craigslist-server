@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.guan.domain.Post;
+import com.guan.dto.CommentDto;
 import com.guan.dto.PostDto;
 import com.guan.service.PostService;
 
@@ -25,22 +26,23 @@ public class PostController extends Controller {
    @Autowired
    private PostService service;
    
+   
    @RequestMapping(value = "/", method = RequestMethod.POST)
    @ApiOperation(value = "Save a post under the assgined category")
-   public Post createPost(@RequestBody PostDto dto) {
+   public PostDto createPost(@RequestBody PostDto dto) {
       Post post = service.createPost(dto);
-      return post;
+      return new PostDto(post);
    }
    
    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-   public Post getPost(@PathVariable("id") String id) {
-      return service.getPost(id);
+   public PostDto getPost(@PathVariable("id") String id) {
+      return new PostDto(service.getPost(id));
    }
    
    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
    @ApiOperation(value = "Update a post, id and category cannot be changed")
-   public Post updatePost(@PathVariable("id") String id, @RequestBody PostDto dto) {
-      return service.updatePost(id, dto);
+   public PostDto updatePost(@PathVariable("id") String id, @RequestBody PostDto dto) {
+      return new PostDto(service.updatePost(id, dto));
    }
    
    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
@@ -49,5 +51,11 @@ public class PostController extends Controller {
       service.deletePost(id);
       return new ResponseEntity<String>(HttpStatus.NO_CONTENT);
    }
-
+   
+   @RequestMapping(value = "/{id}/comment", method = RequestMethod.POST)
+   @ApiOperation(value = "Add a comment under the post")
+   public PostDto createComment (@PathVariable("id") String id, @RequestBody CommentDto dto) {
+      return new PostDto(service.addComment(id, dto));
+   }
+   
 }
