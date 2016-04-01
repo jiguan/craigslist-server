@@ -14,6 +14,7 @@ public class User {
     private ObjectId id;
     private String username, phone, wechat;
     private boolean poster;
+    private Role role;
     
     public User() {}
     public User(UserDto dto) {
