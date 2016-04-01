@@ -27,6 +27,7 @@ public class Application {
            public void addViewControllers(ViewControllerRegistry registry) {
                registry.addViewController("/swagger").setViewName("forward:/swagger-ui.html");
                registry.addViewController("/login").setViewName("forward:/login.html");
+               registry.addViewController("/register").setViewName("forward:/register.html");
            }
        };
    }
