@@ -26,7 +26,7 @@ import io.swagger.annotations.ApiOperation;
 @RestController
 @RequestMapping("/api/user")
 public class UserController extends Controller {
-   private Logger LOGGER = LoggerFactory.getLogger(UserController.class);
+   private static Logger LOGGER = LoggerFactory.getLogger(UserController.class);
    
    @Autowired
    private UserService service;
@@ -52,22 +52,25 @@ public class UserController extends Controller {
    
    
    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-   @ApiOperation(value = "Update a user")
+   @ApiOperation(value = "Update a user's information")
    public UserDto updateUser(@PathVariable("id") String id, @RequestBody UserDto dto) {
       return new UserDto(service.updateUser(id, dto));
    }
    
    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-   @ApiOperation(value = "Remove record completely")
+   @ApiOperation(value = "Delete a user")
    public ResponseEntity<String> deleteUser(@PathVariable("id") String id) {
       service.deleteUser(id);
       return new ResponseEntity<String>(HttpStatus.NO_CONTENT);
    }
    
    @RequestMapping(value = "/all", method = RequestMethod.GET)
+   @ApiOperation(value = "Debug only, return all registered user")
    public List<UserDto> getUsers() {
        List<UserDto> users = new ArrayList<>();
        service.getAllUsers().stream().forEach(user -> users.add(new UserDto(user)));
        return users;
    }
+   
+        
 }

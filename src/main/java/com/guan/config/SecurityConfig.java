@@ -37,10 +37,13 @@ import org.springframework.security.web.csrf.CsrfTokenRepository;
 import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
 import org.springframework.web.filter.CompositeFilter;
 import org.springframework.web.filter.OncePerRequestFilter;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.util.WebUtils;
 
-@Order(6)
-@Configuration
+//@Order(6)
+//@Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     OAuth2ClientContext oauth2ClientContext;
@@ -61,7 +64,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
       // @formatter:off
       http.formLogin().loginPage("/login").permitAll().and()
       .authorizeRequests()
-          .antMatchers("/register**").permitAll().and()
+          .antMatchers("/**").permitAll().and()
       .authorizeRequests()
           .anyRequest().authenticated().and()
       .exceptionHandling()
@@ -134,6 +137,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         HttpSessionCsrfTokenRepository repository = new HttpSessionCsrfTokenRepository();
         repository.setHeaderName("X-XSRF-TOKEN");
         return repository;
+    }
+
+    @Bean
+    public WebMvcConfigurer corsConfigurer() {
+        return new WebMvcConfigurerAdapter() {
+            @Override
+            public void addCorsMappings(CorsRegistry registry) {
+                registry.addMapping("/**").allowedOrigins("http://localhost:3000").allowCredentials(true);
+            }
+        };
     }
 
 }

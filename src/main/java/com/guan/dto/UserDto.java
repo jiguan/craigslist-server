@@ -7,6 +7,7 @@ import lombok.Data;
 @Data
 public class UserDto {
     private String id, username, phone, wechat;
+    private String password;
     private boolean poster;
     public UserDto() {}
     public UserDto(User user) {

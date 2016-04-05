@@ -26,7 +26,7 @@ import io.swagger.annotations.ApiOperation;
 @RestController
 @RequestMapping("/api/category")
 public class CategoryController extends Controller {
-   private Logger LOGGER = LoggerFactory.getLogger(CategoryController.class);
+   private static Logger LOGGER = LoggerFactory.getLogger(CategoryController.class);
    
    @Autowired
    private CategoryService categoryService;

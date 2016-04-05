@@ -23,6 +23,12 @@ public class UserService {
         return repo.findOne(id);
     }
     
+    public User getUserByUsername(String username) {
+        LOGGER.info("Find user by username {}", username);
+        return repo.findByUsername(username);
+    }
+    
+    
     public User createUser(UserDto dto) {
         return saveUser(new User(dto));
     }
