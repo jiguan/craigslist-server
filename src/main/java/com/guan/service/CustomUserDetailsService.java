@@ -1,4 +1,7 @@
-package com.guan.config;
+package com.guan.service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,15 +12,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.guan.controller.UserController;
 import com.guan.domain.User;
 import com.guan.repo.UserRepository;
-import com.guan.service.UserService;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
