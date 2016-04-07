@@ -2,7 +2,6 @@ package com.guan.repo;
 
 import static org.junit.Assert.assertNotNull;
 
-import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -12,6 +11,7 @@ import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.guan.Application;
 import com.guan.controller.CategoryController;
 import com.guan.domain.User;

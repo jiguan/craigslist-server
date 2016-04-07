@@ -34,7 +34,9 @@ public class UserController extends Controller {
    @RequestMapping(value = "/me", method = RequestMethod.GET)
    public Map<String, String> getCurrentUser(Principal principal) {
       Map<String, String> map = new LinkedHashMap<>();
-      map.put("name", principal.getName());
+      if(principal!=null) {
+          map.put("name", principal.getName());
+      }
       return map;
    }
    

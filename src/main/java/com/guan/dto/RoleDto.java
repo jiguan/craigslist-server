@@ -7,10 +7,11 @@ import lombok.Data;
 @Data
 public class RoleDto {
     private String id;
-    private String role;
+    private String name;
     public RoleDto() {}
     public RoleDto(Role role) {
         this.id = role.getId().toHexString();
-        this.role = role.getRole();
+        this.name = role.getName();
     }
+    
 }
