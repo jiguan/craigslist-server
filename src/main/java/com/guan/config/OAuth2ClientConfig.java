@@ -45,9 +45,9 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.util.WebUtils;
 
-@Order(6)
-@EnableOAuth2Client
-@Configuration
+//@Order(6)
+//@EnableOAuth2Client
+//@Configuration
 public class OAuth2ClientConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private OAuth2ClientContext oauth2ClientContext;
