@@ -13,7 +13,7 @@ public class CorsConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
-        http.requestMatchers().antMatchers(HttpMethod.OPTIONS, "/oauth/token", "/rest/**")
+        http.requestMatchers().antMatchers(HttpMethod.OPTIONS, "/oauth/token", "/api/**")
             .and()
                 .csrf().disable()
             .authorizeRequests().anyRequest().permitAll()

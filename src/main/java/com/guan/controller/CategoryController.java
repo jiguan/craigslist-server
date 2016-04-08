@@ -33,7 +33,7 @@ public class CategoryController extends Controller {
    @Autowired
    private PostService postService;
    
-   @RequestMapping(value = "/", method = RequestMethod.GET)
+   @RequestMapping(value = "/all", method = RequestMethod.GET)
    @ApiOperation(value = "Get all categories")
    public List<CategoryDto> getCategory() {
       List<CategoryDto> dtos = new ArrayList<>();
