@@ -17,24 +17,24 @@ public class UserService {
     private Logger LOGGER = LoggerFactory.getLogger(UserService.class);
 
     @Autowired
-    private UserRepository repo;
+    private UserRepository userRepo;
     
     public User getUser(String id) {
-        return repo.findOne(id);
+        return userRepo.findOne(id);
     }
     
     public User getUserByUsername(String username) {
         LOGGER.info("Find user by username {}", username);
-        return repo.findByUsername(username);
+        return userRepo.findByUsername(username);
     }
     
     
     public User createUser(UserDto dto) {
         return saveUser(new User(dto)); 
     }
-
-    public User saveUser(User User) {
-        return repo.save(User);
+    
+    public User saveUser(User user) {
+        return userRepo.save(user);
     }
 
     public User updateUser(String id, UserDto dto) {
@@ -48,14 +48,14 @@ public class UserService {
     public void deleteUser(String id) {
         LOGGER.warn("Delete User {}", id);
         if (getUser(id) != null) {
-            repo.delete(id);
+            userRepo.delete(id);
         } else {
             throw new ResourceNotFoundException(String.format("User %s is not found", id));
         }
     }
 
     public List<User> getAllUsers() {
-        return repo.findAll();
+        return userRepo.findAll();
     }
 
 }

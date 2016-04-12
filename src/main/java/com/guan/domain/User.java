@@ -8,6 +8,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.guan.dto.UserDto;
+import com.guan.util.RoleUtil;
 
 import lombok.Data;
 
@@ -17,11 +18,10 @@ public class User {
     private ObjectId id;
     private String username, phone, wechat;
     private String password;
-    private boolean poster;
-    private Set<Role> roles = new HashSet<Role>();
+    private Set<String> roles = new HashSet<String>();
     
     public User() {
-        roles.add(RoleFactory.getRoleUser());
+        roles.add(RoleUtil.USER);
     }
     public User(User user) {
         this();
@@ -30,8 +30,7 @@ public class User {
         this.phone = user.getPhone();
         this.wechat = user.getWechat();
         this.password = user.getPassword();
-        this.poster = user.isPoster();
-        this.roles = new HashSet<Role>(user.getRoles());
+        this.roles = new HashSet<String>(user.getRoles());
     }
     public User(UserDto dto) {
         this();
