@@ -10,11 +10,8 @@ import org.springframework.stereotype.Service;
 
 import com.guan.domain.Comment;
 import com.guan.domain.Post;
-import com.guan.domain.User;
-import com.guan.dto.CommentDto;
 import com.guan.dto.PostDto;
 import com.guan.exceptions.ResourceNotFoundException;
-import com.guan.repo.CommentRepository;
 import com.guan.repo.PostRepository;
 
 @Service
@@ -26,8 +23,6 @@ public class PostService {
     
     @Autowired
     private PostRepository postRepo;
-    @Autowired
-    private CommentRepository commentRepo;
 
     public List<Post> getPostsUnderCategory(String categoryId) {
         return postRepo.findAll().stream().filter(p -> p.getCategory().equals(categoryId)).collect(Collectors.toList());
@@ -44,10 +39,11 @@ public class PostService {
     public Post getPost(String id) {
         return postRepo.findOne(id);
     }
+    
 
-    public Post createPost(PostDto dto) {
-        return savePost(new Post(dto));
-    }
+//    public Post createPost(PostDto dto) {
+//        return savePost(new Post(dto));
+//    }
 
     public Post savePost(Post post) {
         return postRepo.save(post);
@@ -69,12 +65,20 @@ public class PostService {
         }
     }
 
-    public Post addComment(String id, CommentDto dto) {
+    public Post addComment(String id, Comment comment) {
         Post post = getPost(id);
-        User user = userService.getUser(dto.getUser());
-        LOGGER.debug("User id: {}, name: {}", user.getId().toHexString(), user.getUsername());
-        Comment comment = new Comment(dto, user);
-        post.addComment(commentRepo.save(comment));
+        post.addComment(comment);
+        return savePost(post);
+    }
+    
+    public Post addReply(String postId, int commentId, String reply) {
+        Post post = getPost(postId);
+        List<Comment> comments = post.getComments().stream().filter(c -> c.getId()==commentId).collect(Collectors.toList());;
+        if(comments.size()!=1) {
+            throw new IllegalStateException();
+        }
+        Comment comment = comments.get(0);
+        comment.setReply(reply);
         return savePost(post);
     }
 

@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.guan.domain.Comment;
 import com.guan.domain.Post;
-import com.guan.dto.CommentDto;
 import com.guan.dto.PostDto;
 import com.guan.service.PostService;
 
@@ -27,10 +27,10 @@ public class PostController extends Controller {
    private PostService service;
    
    
-   @RequestMapping(value = "/", method = RequestMethod.POST)
+   @RequestMapping(value = "/new", method = RequestMethod.POST)
    @ApiOperation(value = "Save a post under the assgined category")
    public PostDto createPost(@RequestBody PostDto dto) {
-      Post post = service.createPost(dto);
+      Post post = service.savePost(new Post(dto));
       return new PostDto(post);
    }
    
@@ -54,8 +54,14 @@ public class PostController extends Controller {
    
    @RequestMapping(value = "/{id}/comment", method = RequestMethod.POST)
    @ApiOperation(value = "Add a comment under the post")
-   public PostDto createComment (@PathVariable("id") String id, @RequestBody CommentDto dto) {
-      return new PostDto(service.addComment(id, dto));
+   public PostDto createComment (@PathVariable("id") String id, @RequestBody Comment comment) {
+      return new PostDto(service.addComment(id, comment));
+   }
+   
+   @RequestMapping(value = "{postId}/comment/{commentId}", method = RequestMethod.POST)
+   @ApiOperation(value = "Owner replies user's comment, only once")
+   public PostDto replyComment (@PathVariable("postId") String postId, @PathVariable("commentId") int commentId, @RequestBody String reply) {
+      return new PostDto(service.addReply(postId, commentId, reply));
    }
    
 }

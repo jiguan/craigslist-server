@@ -41,7 +41,7 @@ public class CategoryController extends Controller {
       return dtos;
    }
    
-   @RequestMapping(value = "/", method = RequestMethod.POST)
+   @RequestMapping(value = "/new", method = RequestMethod.POST)
    public CategoryDto createCategory(@RequestBody CategoryDto dto) {
       return new CategoryDto(categoryService.createCategory(dto));
    }

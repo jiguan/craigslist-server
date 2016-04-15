@@ -2,9 +2,7 @@ package com.guan.controller;
 
 import java.security.Principal;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,53 +24,54 @@ import io.swagger.annotations.ApiOperation;
 @RestController
 @RequestMapping("/api/user")
 public class UserController extends Controller {
-   private static Logger LOGGER = LoggerFactory.getLogger(UserController.class);
-   
-   @Autowired
-   private UserService service;
+    private static Logger LOGGER = LoggerFactory.getLogger(UserController.class);
 
-   @RequestMapping(value = "/me", method = RequestMethod.GET)
-   public Map<String, String> getCurrentUser(Principal principal) {
-      Map<String, String> map = new LinkedHashMap<>();
-      if(principal!=null) {
-          map.put("name", principal.getName());
-      }
-      return map;
-   }
-   
-   @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-   public UserDto getUser(@PathVariable("id") String id) {
-       return new UserDto(service.getUser(id));
-   }
-   
-   @RequestMapping(value = "/", method = RequestMethod.POST)
-   @ApiOperation(value = "Save a User")
-   public UserDto createUser(@RequestBody UserDto dto) {
-      User User = service.createUser(dto);
-      return new UserDto(User);
-   }
-   
-   
-   @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-   @ApiOperation(value = "Update a user's information")
-   public UserDto updateUser(@PathVariable("id") String id, @RequestBody UserDto dto) {
-      return new UserDto(service.updateUser(id, dto));
-   }
-   
-   @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-   @ApiOperation(value = "Delete a user")
-   public ResponseEntity<String> deleteUser(@PathVariable("id") String id) {
-      service.deleteUser(id);
-      return new ResponseEntity<String>(HttpStatus.NO_CONTENT);
-   }
-   
-   @RequestMapping(value = "/all", method = RequestMethod.GET)
-   @ApiOperation(value = "Debug only, return all registered user")
-   public List<UserDto> getUsers() {
-       List<UserDto> users = new ArrayList<>();
-       service.getAllUsers().stream().forEach(user -> users.add(new UserDto(user)));
-       return users;
-   }
-   
-        
+    @Autowired
+    private UserService service;
+
+    @RequestMapping(value = "/profile", method = RequestMethod.GET)
+    public UserDto getCurrentUser(Principal principal) {
+        UserDto dto = new UserDto();
+        if (principal != null) {
+            User user = service.getUserByUsername(principal.getName());
+            dto = new UserDto(user);
+        }
+        return dto;
+    }
+
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    public UserDto getUser(@PathVariable("id") String id) {
+        return new UserDto(service.getUser(id));
+    }
+
+    @RequestMapping(value = "/", method = RequestMethod.POST)
+    @ApiOperation(value = "Save a User")
+    public UserDto createUser(@RequestBody UserDto dto) {
+        User User = service.createUser(dto);
+        return new UserDto(User);
+    }
+
+
+    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+    @ApiOperation(value = "Update a user's information")
+    public UserDto updateUser(@PathVariable("id") String id, @RequestBody UserDto dto) {
+        return new UserDto(service.updateUser(id, dto));
+    }
+
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    @ApiOperation(value = "Delete a user")
+    public ResponseEntity<String> deleteUser(@PathVariable("id") String id) {
+        service.deleteUser(id);
+        return new ResponseEntity<String>(HttpStatus.NO_CONTENT);
+    }
+
+    @RequestMapping(value = "/all", method = RequestMethod.GET)
+    @ApiOperation(value = "Debug only, return all registered user")
+    public List<UserDto> getUsers() {
+        List<UserDto> users = new ArrayList<>();
+        service.getAllUsers().stream().forEach(user -> users.add(new UserDto(user)));
+        return users;
+    }
+
+
 }
