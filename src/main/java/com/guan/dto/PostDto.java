@@ -1,24 +1,23 @@
 package com.guan.dto;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Date;
 
-import com.guan.domain.Comment;
 import com.guan.domain.Post;
 
 import lombok.Data;
 
 @Data
 public class PostDto {
-   private String id, title, detail, category;
-   private List<Comment> comments = new ArrayList<>();
+   private String id, title, detail, categoryId, username;
+   private Date timestamp;
    public PostDto() {}
    public PostDto(Post post) {
       this.title = post.getTitle();
       this.id = post.getId().toHexString();
       this.detail = post.getDetail();
-      this.category = post.getCategory();
-      this.comments = post.getComments();
+      this.categoryId = post.getCategoryId();
+      this.timestamp = post.getId().getDate();
+      this.username = post.getUsername();
    }
    
 }

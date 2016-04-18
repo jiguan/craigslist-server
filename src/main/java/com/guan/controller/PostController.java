@@ -1,5 +1,8 @@
 package com.guan.controller;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.guan.domain.Comment;
 import com.guan.domain.Post;
+import com.guan.dto.CommentDto;
 import com.guan.dto.PostDto;
 import com.guan.service.PostService;
 
@@ -30,7 +34,7 @@ public class PostController extends Controller {
    @RequestMapping(value = "/new", method = RequestMethod.POST)
    @ApiOperation(value = "Save a post under the assgined category")
    public PostDto createPost(@RequestBody PostDto dto) {
-      Post post = service.savePost(new Post(dto));
+      Post post = service.createPost(dto);
       return new PostDto(post);
    }
    
@@ -52,16 +56,21 @@ public class PostController extends Controller {
       return new ResponseEntity<String>(HttpStatus.NO_CONTENT);
    }
    
-   @RequestMapping(value = "/{id}/comment", method = RequestMethod.POST)
-   @ApiOperation(value = "Add a comment under the post")
-   public PostDto createComment (@PathVariable("id") String id, @RequestBody Comment comment) {
-      return new PostDto(service.addComment(id, comment));
+   @RequestMapping(value = "/{id}/comments", method = RequestMethod.GET)
+   public List<CommentDto> getCommentsOf(@PathVariable("id") String id) {
+      return service.getCommentsOfPost(id).stream().map(c -> new CommentDto(c)).collect(Collectors.toList());
    }
    
-   @RequestMapping(value = "{postId}/comment/{commentId}", method = RequestMethod.POST)
+   @RequestMapping(value = "/comment/new", method = RequestMethod.POST)
+   @ApiOperation(value = "Add a comment under the post")
+   public CommentDto createComment (@RequestBody CommentDto dto) {
+      return new CommentDto(service.addComment(dto));
+   }
+   
+   @RequestMapping(value = "/comment/{id}", method = RequestMethod.PUT)
    @ApiOperation(value = "Owner replies user's comment, only once")
-   public PostDto replyComment (@PathVariable("postId") String postId, @PathVariable("commentId") int commentId, @RequestBody String reply) {
-      return new PostDto(service.addReply(postId, commentId, reply));
+   public CommentDto replyComment (@PathVariable("id") String id, @RequestBody String reply) {
+      return new CommentDto(service.addReply(id, reply));
    }
    
 }

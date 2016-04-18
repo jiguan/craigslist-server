@@ -5,6 +5,8 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.guan.domain.User;
@@ -18,21 +20,28 @@ public class UserService {
 
     @Autowired
     private UserRepository userRepo;
-    
+
+    public String getCurrentUsername() {
+        final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null)
+            return null;
+        return authentication.getName();
+    }
+
     public User getUser(String id) {
         return userRepo.findOne(id);
     }
-    
+
     public User getUserByUsername(String username) {
         LOGGER.info("Find user by username {}", username);
         return userRepo.findByUsername(username);
     }
-    
-    
+
+
     public User createUser(UserDto dto) {
-        return saveUser(new User(dto)); 
+        return saveUser(new User(dto));
     }
-    
+
     public User saveUser(User user) {
         return userRepo.save(user);
     }
@@ -57,5 +66,6 @@ public class UserService {
     public List<User> getAllUsers() {
         return userRepo.findAll();
     }
+
 
 }

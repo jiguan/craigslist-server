@@ -1,7 +1,6 @@
 package com.guan.service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,23 +9,22 @@ import org.springframework.stereotype.Service;
 
 import com.guan.domain.Comment;
 import com.guan.domain.Post;
+import com.guan.dto.CommentDto;
 import com.guan.dto.PostDto;
 import com.guan.exceptions.ResourceNotFoundException;
+import com.guan.repo.CommentRepository;
 import com.guan.repo.PostRepository;
 
 @Service
 public class PostService {
     private Logger LOGGER = LoggerFactory.getLogger(PostService.class);
-
     @Autowired
     private UserService userService;
-    
+
+    @Autowired
+    private CommentRepository commentRepo;
     @Autowired
     private PostRepository postRepo;
-
-    public List<Post> getPostsUnderCategory(String categoryId) {
-        return postRepo.findAll().stream().filter(p -> p.getCategory().equals(categoryId)).collect(Collectors.toList());
-    }
 
     public List<Post> getAllPosts() {
         List<Post> result = postRepo.findAll();
@@ -39,21 +37,44 @@ public class PostService {
     public Post getPost(String id) {
         return postRepo.findOne(id);
     }
-    
 
-//    public Post createPost(PostDto dto) {
-//        return savePost(new Post(dto));
-//    }
-
-    public Post savePost(Post post) {
-        return postRepo.save(post);
+    public Comment getComment(String id) {
+        return commentRepo.findOne(id);
+    }
+    public List<Comment> getCommentsOfPost(String id) {
+        return commentRepo.findByPostId(id);
     }
 
+    private Post savePost(Post post) {
+        return postRepo.save(post);
+    }
+    private Comment saveComment(Comment comment) {
+        return commentRepo.save(comment);
+    }
+    
+    public Post createPost(PostDto dto) {
+        Post post = new Post(dto);
+        post.setUsername(userService.getCurrentUsername());
+        return savePost(post);
+    }
+    public Comment addComment(CommentDto dto) {
+        Comment comment = new Comment(dto);
+        comment.setUsername(userService.getCurrentUsername());
+        return saveComment(comment);
+    }
+    
     public Post updatePost(String id, PostDto dto) {
         Post post = getPost(id);
         post.setTitle(dto.getTitle());
         post.setDetail(dto.getDetail());
         return savePost(post);
+    }
+
+    public Comment updateComment(String id, CommentDto dto) {
+        Comment comment = getComment(id);
+        comment.setComment(dto.getComment());
+        comment.setRate(dto.getRate());
+        return saveComment(comment);
     }
 
     public void deletePost(String id) {
@@ -65,21 +86,26 @@ public class PostService {
         }
     }
 
-    public Post addComment(String id, Comment comment) {
-        Post post = getPost(id);
-        post.addComment(comment);
-        return savePost(post);
-    }
-    
-    public Post addReply(String postId, int commentId, String reply) {
-        Post post = getPost(postId);
-        List<Comment> comments = post.getComments().stream().filter(c -> c.getId()==commentId).collect(Collectors.toList());;
-        if(comments.size()!=1) {
-            throw new IllegalStateException();
+    public void deleteComment(String id) {
+        LOGGER.warn("Delete comment {}", id);
+        if (getComment(id) != null) {
+            commentRepo.delete(id);
+        } else {
+            throw new ResourceNotFoundException(String.format("Comment %s is not found", id));
         }
-        Comment comment = comments.get(0);
+    }
+
+    public Comment addReply(String commentId, String reply) {
+        Comment comment = getComment(commentId);
         comment.setReply(reply);
-        return savePost(post);
+        return saveComment(comment);
+    }
+
+    public List<Post> getPostsOfCategory(String categoryId) {
+        return postRepo.findByCategoryId(categoryId);
+    }
+    public List<Post> getPostsOfUser(String username) {
+        return postRepo.findByUsername(username);
     }
 
 }

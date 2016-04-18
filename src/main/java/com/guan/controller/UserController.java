@@ -3,6 +3,7 @@ package com.guan.controller;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,7 +17,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.guan.domain.User;
+import com.guan.dto.PostDto;
 import com.guan.dto.UserDto;
+import com.guan.service.PostService;
 import com.guan.service.UserService;
 
 import io.swagger.annotations.ApiOperation;
@@ -27,13 +30,15 @@ public class UserController extends Controller {
     private static Logger LOGGER = LoggerFactory.getLogger(UserController.class);
 
     @Autowired
-    private UserService service;
+    private UserService userService;
+    @Autowired
+    private PostService postService;
 
     @RequestMapping(value = "/profile", method = RequestMethod.GET)
     public UserDto getCurrentUser(Principal principal) {
         UserDto dto = new UserDto();
         if (principal != null) {
-            User user = service.getUserByUsername(principal.getName());
+            User user = userService.getUserByUsername(principal.getName());
             dto = new UserDto(user);
         }
         return dto;
@@ -41,13 +46,13 @@ public class UserController extends Controller {
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public UserDto getUser(@PathVariable("id") String id) {
-        return new UserDto(service.getUser(id));
+        return new UserDto(userService.getUser(id));
     }
 
     @RequestMapping(value = "/", method = RequestMethod.POST)
     @ApiOperation(value = "Save a User")
     public UserDto createUser(@RequestBody UserDto dto) {
-        User User = service.createUser(dto);
+        User User = userService.createUser(dto);
         return new UserDto(User);
     }
 
@@ -55,13 +60,13 @@ public class UserController extends Controller {
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     @ApiOperation(value = "Update a user's information")
     public UserDto updateUser(@PathVariable("id") String id, @RequestBody UserDto dto) {
-        return new UserDto(service.updateUser(id, dto));
+        return new UserDto(userService.updateUser(id, dto));
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     @ApiOperation(value = "Delete a user")
     public ResponseEntity<String> deleteUser(@PathVariable("id") String id) {
-        service.deleteUser(id);
+        userService.deleteUser(id);
         return new ResponseEntity<String>(HttpStatus.NO_CONTENT);
     }
 
@@ -69,8 +74,14 @@ public class UserController extends Controller {
     @ApiOperation(value = "Debug only, return all registered user")
     public List<UserDto> getUsers() {
         List<UserDto> users = new ArrayList<>();
-        service.getAllUsers().stream().forEach(user -> users.add(new UserDto(user)));
+        userService.getAllUsers().stream().forEach(user -> users.add(new UserDto(user)));
         return users;
+    }
+    
+    @RequestMapping(value = "/{id}/posts", method = RequestMethod.GET)
+    @ApiOperation(value = "Get all posts under this user")
+    public List<PostDto> getPostsUnder(@PathVariable("id") String username) {
+        return postService.getPostsOfUser(username).stream().map(p -> new PostDto(p)).collect(Collectors.toList());
     }
 
 

@@ -72,7 +72,7 @@ public class CategoryController extends Controller {
    
    @RequestMapping(value = "/{id}/posts", method = RequestMethod.GET)
    public List<PostDto> getPostsUnderCategory(@PathVariable("id") String categoryId) {
-        List<PostDto> dtos = postService.getPostsUnderCategory(categoryId).stream().map(p -> new PostDto(p)).collect(Collectors.toList());
+        List<PostDto> dtos = postService.getPostsOfCategory(categoryId).stream().map(p -> new PostDto(p)).collect(Collectors.toList());
         LOGGER.info("{} posts under category {}", dtos.size(), categoryId);
         return dtos;
    }
