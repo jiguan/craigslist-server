@@ -16,6 +16,7 @@ public class UserDto {
     public UserDto(User user) {
         this.id = user.getId().toHexString();
         this.username = user.getUsername();
+        this.password = user.getPassword();
         this.phone = user.getPhone();
         this.wechat = user.getWechat();
         this.roles = user.getRoles();

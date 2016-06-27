@@ -1,6 +1,9 @@
 package com.guan.domain;
 
+import java.io.File;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
@@ -19,6 +22,8 @@ public class Post {
     private ObjectId id;
     private String title, detail;
     private Date timestamp;
+    private List<File> files = new ArrayList<>();
+    
     @Indexed
     private String username;
     @Indexed

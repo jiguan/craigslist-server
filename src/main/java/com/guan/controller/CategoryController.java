@@ -1,8 +1,6 @@
 package com.guan.controller;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
@@ -25,7 +23,7 @@ import io.swagger.annotations.ApiOperation;
 
 @RestController
 @RequestMapping("/api/category")
-public class CategoryController extends Controller {
+public class CategoryController {
    private static Logger LOGGER = LoggerFactory.getLogger(CategoryController.class);
    
    @Autowired

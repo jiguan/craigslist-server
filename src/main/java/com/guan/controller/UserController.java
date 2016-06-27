@@ -21,12 +21,13 @@ import com.guan.dto.PostDto;
 import com.guan.dto.UserDto;
 import com.guan.service.PostService;
 import com.guan.service.UserService;
+import com.guan.util.RoleUtil;
 
 import io.swagger.annotations.ApiOperation;
 
 @RestController
 @RequestMapping("/api/user")
-public class UserController extends Controller {
+public class UserController {
     private static Logger LOGGER = LoggerFactory.getLogger(UserController.class);
 
     @Autowired
@@ -34,7 +35,7 @@ public class UserController extends Controller {
     @Autowired
     private PostService postService;
 
-    @RequestMapping(value = "/profile", method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.GET)
     public UserDto getCurrentUser(Principal principal) {
         UserDto dto = new UserDto();
         if (principal != null) {
@@ -43,18 +44,19 @@ public class UserController extends Controller {
         }
         return dto;
     }
+    
+    @RequestMapping(method = RequestMethod.POST)
+    @ApiOperation(value = "Save a User")
+    public UserDto createUser(@RequestBody UserDto dto) {
+        User User = userService.createUser(dto);
+        return new UserDto(User);
+    }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public UserDto getUser(@PathVariable("id") String id) {
         return new UserDto(userService.getUser(id));
     }
 
-    @RequestMapping(value = "/", method = RequestMethod.POST)
-    @ApiOperation(value = "Save a User")
-    public UserDto createUser(@RequestBody UserDto dto) {
-        User User = userService.createUser(dto);
-        return new UserDto(User);
-    }
 
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
@@ -82,6 +84,12 @@ public class UserController extends Controller {
     @ApiOperation(value = "Get all posts under this user")
     public List<PostDto> getPostsUnder(@PathVariable("id") String username) {
         return postService.getPostsOfUser(username).stream().map(p -> new PostDto(p)).collect(Collectors.toList());
+    }
+    
+    @RequestMapping(value = "/{id}/poster", method = RequestMethod.PUT)
+    @ApiOperation(value = "Update a user's role")
+    public UserDto updateUserRole(@PathVariable("id") String id) {
+        return new UserDto(userService.upgradeRole(id, RoleUtil.POSTER));
     }
 
 

@@ -30,6 +30,7 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Res
 import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.InMemoryTokenStore;
+import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 
 import com.guan.service.CustomUserDetailsService;
 
@@ -58,10 +59,12 @@ public class OAuth2ServerConfiguration {
         @Override
         public void configure(HttpSecurity http) throws Exception {
             // @formatter:off
-			http
+			http.formLogin().permitAll()
+			.and()
 				.authorizeRequests()
-                    .antMatchers("/users").hasRole("ADMIN")
-					.antMatchers("/api/**").authenticated();
+					.anyRequest().authenticated()
+			.and().exceptionHandling()
+				      .authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/login"));
 			// @formatter:on
         }
 

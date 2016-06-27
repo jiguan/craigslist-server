@@ -24,7 +24,7 @@ import io.swagger.annotations.ApiOperation;
 
 @RestController
 @RequestMapping("/api/post")
-public class PostController extends Controller {
+public class PostController {
    private Logger LOGGER = LoggerFactory.getLogger(PostController.class);
 
    @Autowired

@@ -29,7 +29,11 @@ public class UserService {
     }
 
     public User getUser(String id) {
-        return userRepo.findOne(id);
+        User user = userRepo.findOne(id);
+        if(user==null) {
+            throw new ResourceNotFoundException(String.format("User %s is not found", id));
+        }
+        return user;
     }
 
     public User getUserByUsername(String username) {
@@ -67,5 +71,22 @@ public class UserService {
         return userRepo.findAll();
     }
 
+    public User upgradeRole(String id, String role) {
+        LOGGER.info("Change user {} role to {}", id, role);
+        User user = getUser(id);
+        user.getRoles().add(role);
+        return saveUser(user);
+    }
+
+    public User removeRole(String id, String role) {
+        LOGGER.info("Remove user {} role {}", id, role);
+        User user = getUser(id);
+        user.getRoles().remove(role);
+        return saveUser(user);
+    }
+    
+    public boolean hasRole(String id, String role) {
+        return getUser(id).getRoles().contains(role);
+    }
 
 }
