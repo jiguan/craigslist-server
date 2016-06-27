@@ -48,8 +48,8 @@ public class WebSecurityTest {
         JSONObject response = getAccessToken();
         String accessToken = response.getString("access_token");
         String tokenType =  response.getString("token_type");
-        String categoryBaseUrl = "/api/category/";
-        mvc.perform(get(categoryBaseUrl).header("Authorization", tokenType+" "+accessToken))
+        String userApi = "/api/user";
+        mvc.perform(get(userApi).header("Authorization", tokenType+" "+accessToken))
             .andDo(print())
             .andExpect(status().isOk());
 

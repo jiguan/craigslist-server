@@ -59,12 +59,9 @@ public class OAuth2ServerConfiguration {
         @Override
         public void configure(HttpSecurity http) throws Exception {
             // @formatter:off
-			http.formLogin().permitAll()
-			.and()
+			http.antMatcher("/**")
 				.authorizeRequests()
-					.anyRequest().authenticated()
-			.and().exceptionHandling()
-				      .authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/login"));
+					.anyRequest().authenticated();
 			// @formatter:on
         }
 
