@@ -1,6 +1,5 @@
 package com.guan.domain;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -22,7 +21,7 @@ public class Post {
     private ObjectId id;
     private String title, detail;
     private Date timestamp;
-    private List<File> files = new ArrayList<>();
+    private List<String> files = new ArrayList<>(); //store filename
     
     @Indexed
     private String username;

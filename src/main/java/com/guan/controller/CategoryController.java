@@ -31,7 +31,7 @@ public class CategoryController {
    @Autowired
    private PostService postService;
    
-   @RequestMapping(value = "/all", method = RequestMethod.GET)
+   @RequestMapping(method = RequestMethod.GET)
    @ApiOperation(value = "Get all categories")
    public List<CategoryDto> getCategory() {
       List<CategoryDto> dtos = categoryService.getCategories().stream().map(c -> new CategoryDto(c)).collect(Collectors.toList());
@@ -39,7 +39,7 @@ public class CategoryController {
       return dtos;
    }
    
-   @RequestMapping(value = "/new", method = RequestMethod.POST)
+   @RequestMapping(method = RequestMethod.POST)
    public CategoryDto createCategory(@RequestBody CategoryDto dto) {
       return new CategoryDto(categoryService.createCategory(dto));
    }
