@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,6 +24,7 @@ import com.guan.service.PostService;
 import io.swagger.annotations.ApiOperation;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:8000", methods={RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE})
 @RequestMapping("/api/post")
 public class PostController {
    private Logger LOGGER = LoggerFactory.getLogger(PostController.class);
@@ -30,12 +32,16 @@ public class PostController {
    @Autowired
    private PostService service;
    
-   
-   @RequestMapping(value = "/new", method = RequestMethod.POST)
+   @RequestMapping(method = RequestMethod.POST)
    @ApiOperation(value = "Save a post under the assgined category")
    public PostDto createPost(@RequestBody PostDto dto) {
       Post post = service.createPost(dto);
       return new PostDto(post);
+   }
+   
+   @RequestMapping(method = RequestMethod.GET)
+   public List<PostDto> getAllPosts() {
+       return service.getAllPosts().stream().map(PostDto::new).collect(Collectors.toList());
    }
    
    @RequestMapping(value = "/{id}", method = RequestMethod.GET)

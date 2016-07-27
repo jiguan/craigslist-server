@@ -2,7 +2,6 @@ package com.guan.service;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.mock.web.MockMultipartFile;
@@ -24,6 +23,7 @@ public class FileServiceTest {
         String postId = "123";
         MockMultipartFile uploadFile = new MockMultipartFile("file", "filename", null, "bar".getBytes());
         service.saveFile(postId, uploadFile);
+        
     }
 
 }

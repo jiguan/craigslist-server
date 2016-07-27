@@ -2,6 +2,11 @@ package com.guan.repo;
 
 import static org.junit.Assert.assertNotNull;
 
+import java.io.File;
+import java.net.URLEncoder;
+import java.util.LinkedList;
+import java.util.List;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +17,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import com.guan.Application;
 import com.guan.service.PostService;
 import com.guan.util.PrettyPrint;
+import com.guan.util.URLUtil;
 
 @WebAppConfiguration
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -35,8 +41,9 @@ public class PostRepoTest {
    }
    
    @Test
-   public void test() {
-       assertNotNull(repo.findAll());
+   public void test() throws Exception {
+       List<String> s = new LinkedList<>();
+       System.out.println(s.remove("as"));
    }
 
 }

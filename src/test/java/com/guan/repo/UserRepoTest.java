@@ -13,7 +13,6 @@ import org.springframework.test.context.web.WebAppConfiguration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.guan.Application;
-import com.guan.controller.CategoryController;
 import com.guan.domain.User;
 
 @WebAppConfiguration
@@ -21,7 +20,7 @@ import com.guan.domain.User;
 @SpringApplicationConfiguration(classes = {Application.class})
 public class UserRepoTest {
 
-    private static Logger LOGGER = LoggerFactory.getLogger(CategoryController.class);
+    private static Logger LOGGER = LoggerFactory.getLogger(UserRepoTest.class);
     ObjectMapper mapper = new ObjectMapper();
     @Autowired
     private UserRepository repo;

@@ -61,7 +61,7 @@ public class OAuth2ServerConfiguration {
             // @formatter:off
 			http.antMatcher("/**")
 				.authorizeRequests()
-					.anyRequest().authenticated();
+					.anyRequest().permitAll();
 			// @formatter:on
         }
 

@@ -37,9 +37,9 @@ public class Application {
        return new WebMvcConfigurerAdapter() {
            @Override
            public void addViewControllers(ViewControllerRegistry registry) {
-               registry.addViewController("/swagger").setViewName("forward:/swagger-ui.html");
-               registry.addViewController("/login").setViewName("forward:/login.html");
-               registry.addViewController("/register").setViewName("forward:/register.html");
+               registry.addViewController("/swagger").setViewName("redirect:/swagger-ui.html");
+               registry.addViewController("/login").setViewName("redirect:/login.html");
+               registry.addViewController("/register").setViewName("redirect:/register.html");
            }
        };
    }

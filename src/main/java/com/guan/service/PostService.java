@@ -45,10 +45,11 @@ public class PostService {
         return commentRepo.findByPostId(id);
     }
 
-    private Post savePost(Post post) {
+    public Post savePost(Post post) {
         return postRepo.save(post);
     }
-    private Comment saveComment(Comment comment) {
+    
+    public Comment saveComment(Comment comment) {
         return commentRepo.save(comment);
     }
     
